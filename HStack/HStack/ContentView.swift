@@ -9,23 +9,17 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        HStack {
-            Rectangle().overlay{
-                Text("1")
-                    .foregroundColor(.white)
-                    .font(.system(size: 20))
-            }
-            
-            Rectangle().overlay{
-                Text("2")
-                    .foregroundColor(.white)
-                    .font(.system(size: 20))
-            }
-            Rectangle().overlay{
-                Text("3")
-                    .foregroundColor(.white)
-                    .font(.system(size: 20))
-            }
+        HStack(spacing: 5) {
+           Text("iPhone")
+            Text("Macbook Pro")
+                .font(.largeTitle)
+                .lineLimit(1)
+                .layoutPriority(1)
+                .foregroundStyle(.indigo)
+                .shadow(color:.gray, radius: 5, x: 5, y: 5)
+            Text("AirPods")
+            Text("iPad")
+            Text("Apple Watch")
         }
     }
 }
