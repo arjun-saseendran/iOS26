@@ -10,10 +10,10 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-           Text("Orange")
+           Text("Swift")
                 .foregroundStyle(.orange)
-            Text("Green")
-            Text("Yellow")
+            Text("iOS Developer")
+            Text("iOS26")
         }
         .foregroundStyle(.secondary)
         .border(.black)
