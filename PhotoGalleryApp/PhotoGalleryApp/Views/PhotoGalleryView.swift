@@ -8,8 +8,37 @@
 import SwiftUI
 
 struct PhotoGalleryView: View {
+    @State private var selectedImage: String? =  nil
+    let images = ["one", "two", "three"]
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack{
+            VStack {
+                if let selectedImage {
+                    //
+                }else {
+                    ScrollView{
+                        VStack{
+                            
+                            
+                            ForEach(images, id: \.self){ image in
+                                Image(image)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame( width: 300, height: 300)
+                                    .clipShape(.rect(cornerRadius: 10))
+                                    .shadow(radius: 5)
+                                    .onTapGesture {
+                                        self.selectedImage = image
+                                    }
+                                
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                }
+                
+            }.navigationTitle("Photo Gallery")
+        }
     }
 }
 
