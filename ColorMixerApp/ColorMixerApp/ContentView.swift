@@ -9,13 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
+        ColorMixerView()
     }
 }
 
@@ -33,6 +27,7 @@ struct ColorMixerView: View{
             ZStack {
                 RoundedRectangle(cornerRadius: 20)
                     .fill(Color(red: red, green: green, blue: blue ))
+                    .frame(height: 200)
                 
                 Text("Color Preview")
                     .foregroundStyle(.white)
@@ -42,8 +37,29 @@ struct ColorMixerView: View{
                 
             }
             VStack(spacing: 20){
+                ColorSlider(value: $red, text: "Red", color: .red)
+                ColorSlider(value: $green, text: "Green", color: .green)
+                ColorSlider(value: $blue, text: "Blue", color: .blue)
                 
             }
+            .padding()
+        }
+        .padding()
+    }
+}
+
+
+struct ColorSlider: View {
+    @Binding var value: Double
+    let text: String
+    let color: Color
+    var body: some View {
+        HStack {
+            Text(text)
+                .frame(width: 50, alignment: .leading)
+                .foregroundStyle(color)
+            Slider(value: $value)
+            Text(String(format: "%.2.f", value))
         }
     }
 }
