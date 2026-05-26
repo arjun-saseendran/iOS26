@@ -17,7 +17,7 @@ struct PhotoGalleryView: View {
                     //
                 }else {
                     ScrollView{
-                        VStack{
+                        VStack(spacing: 20){
                             
                             
                             ForEach(images, id: \.self){ image in
