@@ -20,15 +20,15 @@ struct ContentView: View {
     ContentView()
 }
 
-struct ExternalLink: View {
-
-    let url: URL
-    let label: String
-    @Environment(\.openURL) private var openURL
-
-    var body: some View {
-        Button(label) {
-            openURL(url)
-        }
-    }
-}
+//struct ExternalLink: View {
+//
+//    let url: URL
+//    let label: String
+//    @Environment(\.openURL) private var openURL
+//
+//    var body: some View {
+//        Button(label) {
+//            openURL(url)
+//        }
+//    }
+//}
