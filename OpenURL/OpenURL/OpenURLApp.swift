@@ -11,7 +11,7 @@ import SwiftUI
 struct OpenURLApp: App {
     var body: some Scene {
         WindowGroup {
-            ExternalLinkView()
+            DeepLink()
         }
     }
 }

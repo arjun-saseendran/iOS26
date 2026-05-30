@@ -22,6 +22,10 @@ struct FindUrlView: View {
                     detectedURL = extractFirstURL(from: text)
 
                 }
+                .onOpenURL{ url in
+                    text += "\nOpend URL: \(url)\n"
+
+                }
             if let detectedURL {
                 Link("Open detected url: \(detectedURL.absoluteString)", destination: detectedURL)
                     .foregroundStyle(.blue)
