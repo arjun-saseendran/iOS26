@@ -11,8 +11,8 @@ struct ContentView: View {
 
     var body: some View {
 
-        NavigationStack{
-            VStack{
+        NavigationStack {
+            VStack {
                 ReciverView()
                 SenderView()
             }
@@ -27,14 +27,20 @@ struct ContentView: View {
 
 struct ReciverView: View {
     @State private var counter = 0
+    @State private var additionalnfo = ""
     var body: some View {
-        ZStack{
+        ZStack {
             Color.mint.opacity(0.2)
-            Text("Recived \(counter) notifications")
+            VStack {
+                Text("Recived \(counter) notifications")
+                if !additionalnfo.isEmpty {
+                    Text("*\(additionalnfo)*")
+                }
+            }
 
         }
-        .onAppear{
-            Task(priority: .background){
+        .onAppear {
+            Task(priority: .background) {
                 await reciveNotifications()
             }
         }
@@ -44,7 +50,20 @@ struct ReciverView: View {
         let center = NotificationCenter.default
         let name = Notification.Name("iOSNotifications")
 
-        for await _ in center.notifications(named: name){
+        //        for await _ in center.notifications(named: name){
+        //            await MainActor.run {
+        //                counter += 1
+        //            }
+        //        }
+
+        for await notification in center.notifications(named: name) {
+            if let userInfo = notification.userInfo,
+                let moreInfo = userInfo["Name"] as? String
+            {
+                await MainActor.run {
+                    additionalnfo = moreInfo
+                }
+            }
             await MainActor.run {
                 counter += 1
             }
@@ -56,12 +75,15 @@ struct ReciverView: View {
 
 struct SenderView: View {
     var body: some View {
-        ZStack{
+        ZStack {
             Color.blue.opacity(0.2)
-            Button("Send Notifications"){
+            Button("Send Notifications") {
                 let center = NotificationCenter.default
                 let name = Notification.Name("iOSNotifications")
-                center.post(name: name, object: nil)
+                let additionalInfo = ["Name": "Maria"]
+
+                //                center.post(name: name, object: nil)
+                center.post(name: name, object: additionalInfo)
 
             }
         }
