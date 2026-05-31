@@ -58,10 +58,13 @@ struct ReciverView: View {
 
         for await notification in center.notifications(named: name) {
             if let userInfo = notification.userInfo,
-                let moreInfo = userInfo["Name"] as? String
+                //  let moreInfo = userInfo["Name"] as? String
+                let moreInfo = userInfo["Name"] as? User
             {
                 await MainActor.run {
-                    additionalnfo = moreInfo
+                    //                    additionalnfo = moreInfo
+                    additionalnfo =
+                        "\(moreInfo.name) and her place is \(moreInfo.place)"
                 }
             }
             await MainActor.run {
@@ -80,12 +83,19 @@ struct SenderView: View {
             Button("Send Notifications") {
                 let center = NotificationCenter.default
                 let name = Notification.Name("iOSNotifications")
-                let additionalInfo = ["Name": "Maria"]
+                // let additionalInfo = ["Name": "Maria"]
+                let user = User(name: "Aswini", place: "U.K")
+                let additionalInfo = ["Name": user]
 
-                //                center.post(name: name, object: nil)
-                center.post(name: name, object: additionalInfo)
+                // center.post(name: name, object: nil)
+                center.post(name: name, object: nil, userInfo: additionalInfo)
 
             }
         }
     }
+}
+
+struct User: Codable {
+    var name: String
+    var place: String
 }
