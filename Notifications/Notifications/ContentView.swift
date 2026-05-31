@@ -5,18 +5,28 @@
 //  Created by Arjun Saseendran on 31/05/26.
 //
 
+import Foundation
+import Observation
 import SwiftUI
 
 struct ContentView: View {
-
+    @State private var systemNotification = SystemNotification()
     var body: some View {
-
+        let layout = systemNotification.orientation == .potrait ? AnyLayout(VStackLayout()) : AnyLayout(HStackLayout())
         NavigationStack {
-            VStack {
+//            VStack {
+//                ReciverView()
+//                SenderView()
+//            }
+            layout {
                 ReciverView()
                 SenderView()
             }
             .navigationTitle("iOS Developer")
+            .onChange(of: systemNotification.orientation){ oldValue, newValue
+                in
+                print(oldValue, "->" ,newValue)
+            }
         }
     }
 }
@@ -99,3 +109,37 @@ struct User: Codable {
     var name: String
     var place: String
 }
+
+enum iOSOriantaion {
+    case potrait
+    case landscape
+}
+
+@Observable
+final class SystemNotification {
+    let center = NotificationCenter.default
+    var orientation = iOSOriantaion.potrait
+
+    init() {
+        Task(priority: .background) {
+            await orientationChageNotification()
+        }
+
+    }
+
+    @MainActor
+    func orientationChageNotification() async {
+        let name = UIDevice.orientationDidChangeNotification
+        for await notification in center.notifications(named: name) {
+            if let device = notification.object as? UIDevice {
+                if device.orientation.isPortrait {
+                    orientation = .potrait
+                } else {
+                    orientation = .landscape
+                }
+            }
+        }
+    }
+}
+
+extension Notification: @unchecked Sendable {}
