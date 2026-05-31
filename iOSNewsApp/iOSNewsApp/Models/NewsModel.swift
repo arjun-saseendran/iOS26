@@ -48,3 +48,19 @@ struct Source: Codable {
     let id: String?
     let name: String
 }
+
+extension News {
+    static func fetchNews() async -> News? {
+        do {
+            let news = try await NetworkManager.shared.request(
+                endpoint:
+                    "https://newsapi.org/v2/top-headlines?category=technology&country=us&apiKey=bde383f0cfb845c6b66a27a2a80268fe",
+                responseType: News.self
+            )
+            return news
+        } catch {
+
+        }
+        return nil
+    }
+}
