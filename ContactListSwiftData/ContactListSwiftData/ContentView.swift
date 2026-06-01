@@ -6,19 +6,23 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
+    @Query private var friends: [FriendModel]
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack{
+            List(friends){ friend in
+                HStack(spacing: 5){
+                    Text(friend.firstName)
+                    Text(friend.lastName)
+                }
+            }
+            .navigationTitle("Contact List")
         }
-        .padding()
     }
 }
 
-#Preview {
+#Preview (traits: .modifier(FriendModelPreviewModifier())){
     ContentView()
 }
