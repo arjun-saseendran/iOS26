@@ -18,7 +18,15 @@ final class ViewModel {
         fetchRates()
     }
 
-    func fetchRates() {}
+    func fetchRates() {
+
+        ExchangeRateService.shared.getExchangeRate()
+            .replaceError(with: ExchangeRate.placeholder)
+            .sink { [weak self] in
+                self?.exchagneRate = $0
+            }
+            .store(in: &cancellableSet)
+    }
 
     deinit {
         cancellableSet.forEach { $0.cancel() }
