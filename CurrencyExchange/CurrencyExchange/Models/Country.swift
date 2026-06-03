@@ -1508,14 +1508,23 @@ extension Country {
         ]
     }
 
-    static func getCountryBy(text: String) -> Country? {
-        let lowercasedText = text.localizedLowercase
-        return countries.first { country in
-            country.countryName.localizedLowercase == lowercasedText
-                || country.countryCode.localizedLowercase == lowercasedText
-                || country.currencyCode.localizedLowercase == lowercasedText
+    static func getCountryBy(name: String) -> Country? {
+        countries.filter {
+            $0.countryName.localizedLowercase == name.localizedLowercase
+        }.first
+    }
 
-        }
+    static func getCountryBy(code: String) -> Country? {
+        countries.filter {
+            $0.countryCode.localizedLowercase == code.localizedLowercase
+        }.first
+    }
+
+    static func getCountryBy(currencyCode: String) -> Country? {
+        countries.filter {
+            $0.currencyCode.localizedLowercase
+                == currencyCode.localizedLowercase
+        }.first
     }
 
 }

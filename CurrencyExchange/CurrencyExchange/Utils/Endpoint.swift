@@ -12,7 +12,7 @@ enum Endpoint {
     case withSymbols
 
     private var baseURL: URL {
-        URL(string: "https://api.exchangerateapi.io/v1/latest")!
+        URL(string: "http://api.exchangeratesapi.io/v1/latest")!
     }
 
     var url: URL? {

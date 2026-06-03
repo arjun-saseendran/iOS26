@@ -8,14 +8,20 @@ import Foundation
 
 struct ExchangeRate: Codable, Identifiable, Equatable {
     let id = UUID()
-    let date: String?
-    let rates: [String:Double]?
 
-    private enum CodingKeys: CodingKey{
+    let date: String?
+    let rates: [String: Double]?
+
+    private enum CodingKeys: CodingKey {
         case date, rates
     }
 }
 
 extension ExchangeRate {
-    static var placeholder: ExchangeRate { Self(date: nil, rates: nil)}
+    static var placeholder: ExchangeRate {
+
+        Self(date: nil, rates: nil)
+
+    }
+
 }

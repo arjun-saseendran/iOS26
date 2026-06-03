@@ -40,7 +40,7 @@ extension ViewModel {
     }
 
     func emojiFlag(_ currencyCode: String) -> String {
-        guard let country = Country.getCountryBy(text: currencyCode) else {
+        guard let country = Country.getCountryBy(currencyCode: currencyCode) else {
             return
                 currencyCode
                 .dropLast()
@@ -54,7 +54,7 @@ extension ViewModel {
     }
 
     func countryName(currencyCode: String) -> String? {
-        Country.getCountryBy(text: currencyCode)?.countryName
+        Country.getCountryBy(currencyCode: currencyCode)?.countryName
     }
 
     func formatRateForLocale(for key: String) -> String {
