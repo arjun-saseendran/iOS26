@@ -13,8 +13,7 @@ struct ContentView: View {
         NavigationStack {
             List(networkService.posts) { post in
                 NavigationLink {
-                    Text("Destination View")
-
+                    DetailsView(post: post)
                 } label: {
                     HStack {
                         Text(post.title)
@@ -31,7 +30,6 @@ struct ContentView: View {
             .navigationTitle("Hacker News")
         }
 
-        .padding()
     }
 }
 
