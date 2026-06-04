@@ -8,13 +8,29 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var networkService = NetworkService()
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            List(networkService.posts) { post in
+                NavigationLink {
+                    Text("Destination View")
+
+                } label: {
+                    HStack {
+                        Text(post.title)
+                            .font(.headline)
+                        Spacer()
+                        Text(String(post.points))
+                            .font(.subheadline)
+                    }
+                }
+            }
+            .task {
+                await networkService.fetchPosts()
+            }
+            .navigationTitle("Hacker News")
         }
+
         .padding()
     }
 }
