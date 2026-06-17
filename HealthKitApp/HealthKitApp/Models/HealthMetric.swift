@@ -13,7 +13,7 @@ enum HealthMetric: String, CaseIterable {
     case calories = "Calories"
     case steps = "Steps"
     case sandHours = "Sand Hours"
-    case excerciseMinutes = "Excercise Minutes"
+    case excerciseMinutes = "Excercise Min"
     case hertRate = "Heart Rate"
     case flightsClimbed = "Flights Climbed"
 

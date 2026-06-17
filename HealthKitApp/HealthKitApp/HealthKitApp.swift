@@ -9,9 +9,14 @@ import SwiftUI
 
 @main
 struct HealthKitApp: App {
+    @StateObject private var healthKit = HealthKitManager.shared
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if !healthKit.isAuthorized {
+                PermissionsView()
+            } else {
+                ContentView()
+            }
         }
     }
 }
