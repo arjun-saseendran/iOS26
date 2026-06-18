@@ -33,9 +33,47 @@ struct MetricDetailView: View {
             .chartOverlay { proxy in
                 GeometryReader { geo in
 
+                    Rectangle()
+                        .fill(.clear)
+                        .contentShape(.rect)
+                        .gesture(
+                            DragGesture(minimumDistance: 0)
+                                .onChanged { value in
+                                    onDragChangeInChart(
+                                        value,
+                                        proxy: proxy,
+                                        geometry: geo
+                                    )
+
+                                }
+                                .onEnded { _ in
+                                    selectedData = nil
+                                }
+                        )
+                    if let selected = selectedData {
+                        chartBubble(selected, geo)
+                    }
+                }
+            }
+            List(records) { record in
+
+                HStack {
+                    Text(
+                        record.date.formatted(
+                            date: .abbreviated,
+                            time: .omitted
+                        )
+                    )
+                    Spacer()
+                    Text("\(Int(record.value)) \(metric.unit)")
+                        .foregroundStyle(metric.color)
                 }
             }
 
+        }
+        .navigationTitle(metric.rawValue)
+        .refreshable {
+            await healthKit.fetchData(for: metric)
         }
 
     }
@@ -62,5 +100,65 @@ struct MetricDetailView: View {
 
         }
         return closestRecord
+    }
+    private func onDragChangeInChart(
+        _ value: DragGesture.Value,
+        proxy: ChartProxy,
+        geometry: GeometryProxy
+    ) {
+        let xPosition = value.location.x
+        if let record = findClosestRecord(
+            at: xPosition,
+            proxy: proxy,
+            size: geometry.size
+        ) {
+            let plotWidth = geometry.size.width
+            let barWidth = plotWidth / CGFloat(records.count)
+            let barX = (proxy.position(forX: record.date) ?? 0) + (barWidth / 2)
+            let barHeight =
+                proxy.position(forY: 0)!
+                - (proxy.position(forY: record.value) ?? 0)
+            selectedData = ChartData(
+                date: record.date,
+                values: record.value,
+                barX: barX,
+                barHeight: barHeight
+            )
+
+        }
+
+    }
+
+    private func chartBubble(_ selected: ChartData, _ geometry: GeometryProxy)
+        -> some View
+    {
+        Group {
+            Rectangle()
+                .fill(metric.color.opacity(0.8))
+                .frame(width: 2)
+                .position(x: selected.barX, y: geometry.size.height / 2)
+                .frame(height: geometry.size.height)
+            VStack {
+                Text(
+                    selected.date.formatted(date: .abbreviated, time: .omitted)
+                )
+                .font(.caption)
+                .foregroundStyle(metric.color)
+                Text("\(selected.values) \(metric.unit)")
+                    .font(.headline)
+                    .foregroundStyle(metric.color)
+            }
+            .padding(8)
+            .background {
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .fill(.ultraThinMaterial)
+                    .shadow(radius: 2)
+            }
+            .position(
+
+                x: selected.barX,
+                y: max(40, geometry.size.height - selected.barHeight - 50)
+            )
+        }
     }
 }
