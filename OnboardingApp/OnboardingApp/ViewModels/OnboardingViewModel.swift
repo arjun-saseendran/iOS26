@@ -24,7 +24,7 @@ final class OnboardingViewModel {
     }
 
     var isLastStep: Bool {
-        guard let currentIndex = currentIndex else { return false}
+        guard let currentIndex = currentIndex else { return false }
         return currentIndex >= steps.count - 1
     }
 
@@ -45,11 +45,26 @@ final class OnboardingViewModel {
             currentIndex = index
         }
     }
+    func navigationToNext() {
+        guard !isLastStep else {
+            completeOnboarding()
+            return
+        }
 
+        let current = currentIndex ?? 0
+        let nextIndex = min(current + 1, steps.count - 1)
+        withAnimation(.easeInOut(duration: 0.3)) {
+            currentIndex = nextIndex
+        }
+    }
+
+    private func completeOnboarding() {
+        onboardingCompletion()
+    }
 }
 
 extension Array {
-    subscript (safe index: Int) -> Element? {
+    subscript(safe index: Int) -> Element? {
         return indices.contains(index) ? self[index] : nil
     }
 }
