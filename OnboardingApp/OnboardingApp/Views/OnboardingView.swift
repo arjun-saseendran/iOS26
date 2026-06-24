@@ -43,17 +43,20 @@ struct OnboardingView: View {
 
     private var headerView: some View {
         HStack {
+            Spacer()
             Button("Skip") {
                 dismiss()
             }
             .foregroundStyle(.white)
             .font(.body.weight(.medium))
-            Spacer()
+            .padding()
+            .background(.ultraThinMaterial, in: Capsule())
+
 
         }
         .padding(.horizontal, 24)
         .padding(.top, 16)
-        .background(.ultraThinMaterial, in: Capsule())
+
     }
 
     private var contentScrollView: some View {

@@ -22,5 +22,11 @@ struct OnboardingStep: Identifiable, Equatable{
 
 }
 
-
+extension OnboardingStep {
+    static let sampleSteps: [OnboardingStep] = [
+        OnboardingStep(imageName: "food1", title: "Choose Your Favorite Menu", description: "Discover delicious options tailored to your preferences and dietary needs.", accentColor: .blue),
+        OnboardingStep(imageName: "food2", title: "Find Best Price and Deals", description: "Discover delicious options tailored to your preferences and dietary needs.", accentColor: .yellow),
+        OnboardingStep(imageName: "food3", title: "Fast Delivery Items", description: "Discover delicious options tailored to your preferences and dietary needs.", accentColor: .pink)
+    ]
+}
 
