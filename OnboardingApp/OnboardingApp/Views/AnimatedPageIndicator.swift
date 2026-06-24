@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AnimatedPageIndicator: View {
-    let totalPage: Int
+    let totalPages: Int
     let currentIndex: Int
     let indicatorSpacing: CGFloat = 12
     let indicatorHeight: CGFloat = 7
@@ -17,7 +17,7 @@ struct AnimatedPageIndicator: View {
 
     var body: some View {
         HStack(spacing: indicatorSpacing) {
-            ForEach(0..<totalPage, id: \.self) { index in
+            ForEach(0..<totalPages, id: \.self) { index in
                 Capsule()
                     .foregroundStyle(.white.gradient)
                     .frame(
