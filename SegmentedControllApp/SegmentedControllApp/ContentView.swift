@@ -19,7 +19,7 @@ enum AppTab: String, CaseIterable {
         case .iOS:
             return .blue
         case .UIKit:
-            return .purple
+            return .green
         }
     }
 
@@ -34,7 +34,6 @@ enum AppTab: String, CaseIterable {
         }
     }
 
-
 }
 
 struct ContentView: View {
@@ -43,21 +42,64 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Image(systemName: selectedTab.icon)
-                    .font(.system(size: 80))
-                    .foregroundStyle(selectedTab.color)
-                Text(selectedTab.rawValue)
-                    .font(.largeTitle.bold())
+                Spacer()
+                VStack {
+                    Image(systemName: selectedTab.icon)
+                        .font(.system(size: 80))
+                        .foregroundStyle(selectedTab.color)
+                    Text(selectedTab.rawValue)
+                        .font(.largeTitle.bold())
+
+                }
+                .padding(60)
+                .frame(width: 300, height: 200)
+                .background(
+                    selectedTab.color.opacity(0.15).gradient,
+                    in: .rect(cornerRadius: 20)
+                )
+                Spacer()
+                customSegmentedControl
+                Spacer()
 
             }
-            .padding(60)
-            .frame(width: 300, height: 200)
-            .background(selectedTab.color.opacity(0.15).gradient, in: .rect(cornerRadius: 20))
-            Spacer()
-            Spacer()
 
+            .navigationTitle("iOS Developer")
         }
-        .navigationTitle("iOS Developer")
+    }
+    @ViewBuilder
+    var customSegmentedControl: some View {
+        HStack(spacing: 0) {
+            ForEach(AppTab.allCases, id: \.rawValue) { tab in
+                Text(tab.rawValue)
+                    .font(.headline)
+                    .padding(.vertical, 12)
+                    .frame(maxWidth: .infinity)
+                    .foregroundStyle(
+                        selectedTab == tab ? .white : .primary.opacity(0.7)
+                    )
+                    .background {
+                        if selectedTab == tab {
+                            Capsule()
+                                .foregroundStyle(selectedTab.color.gradient)
+                                .matchedGeometryEffect(
+                                    id: "selected_tab",
+                                    in: animation
+                                )
+                        }
+                    }
+                    .contentShape(.rect)
+                    .onTapGesture {
+                        withAnimation(.bouncy) {
+                            self.selectedTab = tab
+                        }
+
+                    }
+
+            }
+        }
+        .padding(6)
+        .background(.primary.opacity(0.08), in: .capsule)
+        .padding(.horizontal)
     }
 }
 
