@@ -70,7 +70,11 @@ struct ContentView: View {
     var customSegmentedControl: some View {
         HStack(spacing: 0) {
             ForEach(AppTab.allCases, id: \.rawValue) { tab in
-                Text(tab.rawValue)
+                HStack(spacing: 8){
+                    Image(systemName: tab.icon)
+                    Text(tab.rawValue)
+                }
+
                     .font(.headline)
                     .padding(.vertical, 12)
                     .frame(maxWidth: .infinity)
@@ -79,7 +83,10 @@ struct ContentView: View {
                     )
                     .background {
                         if selectedTab == tab {
-                            Capsule()
+//                            Capsule()
+                            RoundedRectangle(cornerRadius: 5, style: .circular)
+                                .frame(height: 3)
+                                .offset(y: 15)
                                 .foregroundStyle(selectedTab.color.gradient)
                                 .matchedGeometryEffect(
                                     id: "selected_tab",
@@ -89,7 +96,7 @@ struct ContentView: View {
                     }
                     .contentShape(.rect)
                     .onTapGesture {
-                        withAnimation(.bouncy) {
+                        withAnimation(.interactiveSpring) {
                             self.selectedTab = tab
                         }
 
