@@ -7,10 +7,17 @@
 
 import SwiftUI
 
-enum AppTab: String, CaseIterable {
+protocol SegmentItem: Hashable & CaseIterable & RawRepresentable where
+RawValue == String {
+    var icon: String { get }
+    var color: Color { get }
+}
+
+enum AppTab: String, SegmentItem {
     case swiftUI = "SwiftUI"
     case iOS = "iOS"
     case UIKit = "UIKit"
+//    case ML = "ML"
 
     var color: Color {
         switch self {
@@ -20,6 +27,8 @@ enum AppTab: String, CaseIterable {
             return .blue
         case .UIKit:
             return .green
+//        case .ML:
+//            return .purple
         }
     }
 
@@ -31,6 +40,8 @@ enum AppTab: String, CaseIterable {
             return "apple.logo"
         case .UIKit:
             return "macwindow"
+//        case .ML:
+//            return "brain"
         }
     }
 
@@ -58,7 +69,8 @@ struct ContentView: View {
                     in: .rect(cornerRadius: 20)
                 )
                 Spacer()
-                customSegmentedControl
+//                customSegmentedControl
+                ReusableSegmentedControl(selection: $selectedTab)
                 Spacer()
 
             }
@@ -112,4 +124,46 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+}
+
+struct ReusableSegmentedControl<T: SegmentItem>: View{
+    @Binding var selection: T
+    private let items: [T] = T.allCases as! [T]
+    @Namespace private var animation
+
+
+
+    var body: some View {
+        HStack(spacing: 0){
+            ForEach(items, id: \.self){ item in
+                HStack(spacing: 8){
+                    Image(systemName: item.icon)
+                    Text(item.rawValue)
+                }
+
+                    .font(.headline)
+                    .padding(.vertical, 12)
+                    .frame(maxWidth: .infinity)
+                    .foregroundStyle(selection == item ? .white : .primary.opacity(0.7))
+                    .background {
+                        if selection == item {
+                            Capsule()
+                                .foregroundStyle(item.color.gradient)
+                                .matchedGeometryEffect(id: "reusable_segmentId", in: animation)
+                        }
+                    }
+                    .contentShape(.rect)
+                    .onTapGesture{
+                        withAnimation(.bouncy){
+                            selection = item
+                        }
+                    }
+
+            }
+        }
+        .padding(6)
+        .background(.primary.opacity(0.08), in: .capsule)
+        .padding(.horizontal)
+
+    }
 }
