@@ -38,14 +38,26 @@ enum AppTab: String, CaseIterable {
 }
 
 struct ContentView: View {
+    @State private var selectedTab: AppTab = .UIKit
+    @Namespace private var animation
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            VStack {
+                Image(systemName: selectedTab.icon)
+                    .font(.system(size: 80))
+                    .foregroundStyle(selectedTab.color)
+                Text(selectedTab.rawValue)
+                    .font(.largeTitle.bold())
+
+            }
+            .padding(60)
+            .frame(width: 300, height: 200)
+            .background(selectedTab.color.opacity(0.15).gradient, in: .rect(cornerRadius: 20))
+            Spacer()
+            Spacer()
+
         }
-        .padding()
+        .navigationTitle("iOS Developer")
     }
 }
 
