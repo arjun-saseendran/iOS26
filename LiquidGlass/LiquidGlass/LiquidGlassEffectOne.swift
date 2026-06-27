@@ -16,22 +16,22 @@ struct LiquidGlassEffectOne: View {
                 HStack {
                     Image(systemName: "sun.max.fill")
                         .padding()
-                        .glassEffect()
+                        .glassEffect(.clear)
                         .glassEffectID("sun.max.fill", in: namespace)
                     if animate {
                         Image(systemName: "moon.stars.fill")
                             .padding()
-                            .glassEffect()
+                            .glassEffect(.clear)
                             .glassEffectID("moon.stars.fill", in: namespace)
                         Image(systemName: "cloud.rain.fill")
                             .padding()
-                            .glassEffect()
+                            .glassEffect(.clear)
                             .glassEffectID("cloud.rain.fill", in: namespace)
 
                     }
                 }
                 Button("Animate"){
-                    withAnimation(.bouncy(duration: 5)){
+                    withAnimation(.bouncy(duration: 0.5)){
                         animate.toggle()
                     }
                 }
