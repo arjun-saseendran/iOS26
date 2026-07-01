@@ -8,7 +8,7 @@ import Foundation
 import SwiftUI
 
 extension AttributedString {
-    init(systemMarkdown markdownString: String) throws {
+    init(styledMarkdown markdownString: String) throws {
         var output = try AttributedString(
             markdown: markdownString,
             options: .init(
